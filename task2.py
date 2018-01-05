@@ -10,7 +10,7 @@ header = {'user-agent': 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/53
 baseTable = []
 extendTable = []
 
-for i in range(1, 11):
+for i in range(8, 9):
     payload = {'mod': 'forumdisplay', 'fid': '17', 'page': str(i)}
     page = requests.get(url, params=payload, headers=header)
     soup = BeautifulSoup(page.text, "lxml")
@@ -37,3 +37,19 @@ for i in range(len(baseTable)):
     bodyText = tdList[0].get_text()
     extendTable.append([baseTable[i][0], baseTable[i][1], baseTable[i][2], bodyText])
 print(len(extendTable))
+
+
+def hitKeywords(tList):
+    keyList = ['儿童自行车', 'IPHONE', '懒人床上小桌子']
+    result = False
+    for key in keyList:
+        if (key in tList[0]) or (key in tList[3]):
+            result = True
+            break
+    return result
+
+
+filterTable = filter(hitKeywords, extendTable)
+for post in filterTable:
+    print(post)
+
